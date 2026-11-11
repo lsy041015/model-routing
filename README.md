@@ -2,14 +2,22 @@
 
 A Claude Code plugin that sends each subagent task to the right Claude model and effort level, based on what the task is and how hard it is.
 
-| Type | Easy | Standard | Hard | Critical |
-|---|---|---|---|---|
-| Lookup (read-only) | `scout` haiku/low | `scout` haiku/low | review row | - |
-| Fact extraction | `extractor` sonnet/medium | `extractor` sonnet/medium | `extractor` + main | - |
-| Code change | main session | `implementer` sonnet/high | `implementer-hard` opus/high | `critical` fable/high |
-| Review (no edits) | main session | `reviewer-lite` sonnet/high | `reviewer` opus/high | `critical` fable/high |
+| Task | Agent | Model / effort |
+|---|---|---|
+| Find files, symbols, config, log lines | `scout` | haiku / low |
+| Classify, tag, route many short items | `classifier` | haiku / medium |
+| Facts from mail, chat, docs, web; repeated investigation | `extractor` | sonnet / medium |
+| Scoped bug fix or feature (2-5 files, tests) | `implementer` | sonnet / high |
+| Documents, slides, spreadsheets, reports | `writer` | sonnet / high |
+| Standard code review | `reviewer-lite` | sonnet / high |
+| Hard debugging, concurrency, cross-module, UI, no tests | `implementer-hard` | opus / high |
+| Hard review or audit | `reviewer` | opus / high |
+| Browser, computer use, image-heavy loops | `vision` | opus / medium |
+| Major refactor or migration, architecture, deep research | `architect` | fable / medium |
+| Security, data loss, production or hardware control, release review | `critical` | fable / high |
+| Easy 1-2 file changes | main session | Opus 5.5 / medium |
 
-The `model-routing` skill holds the difficulty rules, the brief and verification checklist, the escalation order and the evidence (Artificial Analysis 2026-11-11, claude.dev "Which Claude model should you build with?" 2026-11-09).
+The `model-routing` skill keeps this table, the difficulty overrides and the delegation checklist in `SKILL.md`, and loads detail only when needed from `references/` (escalation, costs, switching models, measuring). Evidence: Artificial Analysis 2026-11-11 and claude.dev "Which Claude model should you build with?" (2026-11-09).
 
 ## Install
 
@@ -35,11 +43,11 @@ A plugin cannot change these for you.
 ## Requirements
 
 - Claude Code v2.1.293 or later (the `haiku` alias resolves to Haiku 5.5 on the Anthropic API; on Bedrock, Vertex and Foundry it may still resolve to Haiku 4.5).
-- Access to Fable for the `critical` agent. Without it, change `model: fable` to `model: opus` and `effort: high` to `effort: xhigh` in `agents/critical.md`.
+- Access to Fable for the `architect` and `critical` agents. Without it, change `model: fable` to `model: opus` in both, and set `effort: high` in `architect.md` and `effort: xhigh` in `critical.md`.
 
 ## Adjusting
 
-Prices and benchmarks move. Re-check the table in `skills/model-routing/SKILL.md` against your own tasks: pick real tasks with an outcome check, run each candidate at two or three effort levels in separate sessions, and compare score against spend.
+Prices and benchmarks move. Re-check `skills/model-routing/references/costs.md` against your own tasks: pick real tasks with an outcome check, run each candidate at two or three effort levels in separate sessions, and compare score against spend.
 
 ## License
 
