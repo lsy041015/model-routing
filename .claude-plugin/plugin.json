@@ -1,0 +1,17 @@
+{
+  "name": "model-routing",
+  "version": "0.1.0",
+  "description": "Route Claude Code subagents to the right Claude model and effort by task type and difficulty: Haiku for lookups, Sonnet for scoped work, Opus for hard work, Fable for critical work.",
+  "author": {
+    "name": "lsy041015",
+    "url": "https://github.com/lsy041015"
+  },
+  "license": "MIT",
+  "keywords": [
+    "subagents",
+    "model-selection",
+    "cost",
+    "effort",
+    "routing"
+  ]
+}

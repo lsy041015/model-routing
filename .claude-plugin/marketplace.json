@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "model-routing",
+  "description": "Model and effort routing for Claude Code subagents.",
+  "owner": { "name": "lsy041015", "url": "https://github.com/lsy041015" },
+  "plugins": [
+    {
+      "name": "model-routing",
+      "description": "Route subagents to Haiku, Sonnet, Opus or Fable by task type and difficulty.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
