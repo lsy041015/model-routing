@@ -1,6 +1,6 @@
 ---
 name: extractor
-description: Fact extraction at medium effort, Sonnet. Use to read mail, chat, documents or web pages and pull out facts, cases or table rows with their sources. Read-only.
+description: Fact extraction and repeated investigation at medium effort, Sonnet. Use when facts must be found through account tools - searching and reading mail, chat, drive or calendar, or following many web pages - and pulled out as facts, cases or table rows with their sources. Text already at hand (files, logs, one known URL) goes to reader. Read-only.
 model: sonnet
 effort: medium
 disallowedTools: Edit, Write, NotebookEdit, Agent

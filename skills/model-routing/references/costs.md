@@ -17,6 +17,7 @@ All four: 1M-token context, 128K max output. `/effort` shows your current level.
 |---|---|---|---|---|---|---|---|
 | haiku-5.5 low | 18.6 | 0.126 | 0.229 | 0.044 | 132 | 213 | 5.3 |
 | haiku-5.5 medium | 24.6 | 0.152 | 0.286 | 0.092 | 238 | 224 | 9.7 |
+| haiku-5.5 high | 29.9 | 0.217 | 0.337 | 0.159 | 391 | 225 | 19.1 |
 | haiku-5.5 max | 36.5 | 0.328 | 0.354 | 0.41 | 880 | 257 | 187 |
 | sonnet-5.5 medium | 30.8 | 0.298 | 0.549 | 0.78 | 236 | 131 | 5.0 |
 | sonnet-5.5 high | 41.5 | 0.439 | 0.594 | 1.64 | 406 | 144 | 9.4 |
@@ -40,6 +41,9 @@ Reading the table:
 - Haiku max is no Sonnet substitute: half the cost of Sonnet medium, but tool
   workflows 0.354 vs 0.549 and 3.7x the time; below Sonnet high on
   Terminal-Bench (0.328 vs 0.439).
+- `reader` (Haiku high) vs `extractor` (Sonnet medium): −80% cost, hallucination
+  0.389 vs 0.500, long-context 0.773 vs 0.763, 1.7x the time; tool workflows
+  0.337 vs 0.549, so account-tool loops stay on Sonnet.
 - Fable low vs Opus high: −11% cost, −42% time, higher intelligence and tool
   workflows, but Terminal-Bench 0.545 vs 0.566. Worth an A/B on your own hard
   tasks (`measure.md`) before switching.
