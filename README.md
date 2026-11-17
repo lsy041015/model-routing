@@ -17,7 +17,7 @@ A Claude Code plugin that sends each subagent task to the right Claude model and
 | Security, data loss, production or hardware control, release review | `critical` | fable / high |
 | Easy 1-2 file changes | main session | Opus 5.5 / medium |
 
-The `model-routing` skill keeps this table, the difficulty overrides and the delegation checklist in `SKILL.md`, and loads detail only when needed from `references/` (escalation, costs, switching models, measuring). Evidence: Artificial Analysis 2026-11-11 and claude.dev "Which Claude model should you build with?" (2026-11-09).
+The `model-routing` skill keeps this table, the difficulty overrides and the delegation checklist in `SKILL.md`, and loads detail only when needed from `references/` (escalation, costs, switching models, measuring). Evidence: Artificial Analysis 2026-11-18 and claude.dev "Which Claude model should you build with?" (2026-11-09).
 
 ## Install
 

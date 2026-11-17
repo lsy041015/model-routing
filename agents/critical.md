@@ -1,6 +1,6 @@
 ---
 name: critical
-description: Critical work at high effort, Fable. Use for security, data-loss risk, production or hardware control paths, architecture, major refactors or migrations, or final release review; implements or reviews per the brief.
+description: Critical work at high effort, Fable. Use for security, data-loss risk, production or hardware control paths, final release review, or when architect (Fable medium) fell short; implements or reviews per the brief.
 model: fable
 effort: high
 disallowedTools: Agent

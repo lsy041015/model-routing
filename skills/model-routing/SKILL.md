@@ -34,7 +34,8 @@ Main session (not a subagent):
 ## 2. Difficulty overrides (hardest signal wins)
 
 - Any Critical signal (security, data loss, production/hardware control, release review) → `critical`, whatever the table said.
-- A clear spec does not make work easy: migrations and performance optimization go to `implementer-hard`, or `architect` when large.
+- A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to `architect`.
+- Escalation chain: `implementer` → `implementer-hard` / `reviewer` (opus/high) → `architect` (fable/medium) → `critical` (fable/high).
 - Haiku agents only get work where a mistake is cheap to spot. Code edits and judgment calls never go to Haiku.
 
 ## 3. Before and after delegating
