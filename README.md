@@ -6,7 +6,8 @@ A Claude Code plugin that sends each subagent task to the right Claude model and
 |---|---|---|
 | Find files, symbols, config, log lines | `scout` | haiku / low |
 | Classify, tag, route many short items | `classifier` | haiku / medium |
-| Facts from mail, chat, docs, web; repeated investigation | `extractor` | sonnet / medium |
+| Facts or summary from files, logs, pasted docs, a known URL | `reader` | haiku / high |
+| Facts found via mail, chat, drive or many web pages; repeated investigation | `extractor` | sonnet / medium |
 | Scoped bug fix or feature (2-5 files, tests) | `implementer` | sonnet / high |
 | Documents, slides, spreadsheets, reports | `writer` | sonnet / high |
 | Standard code review | `reviewer-lite` | sonnet / high |

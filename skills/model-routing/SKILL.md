@@ -13,7 +13,8 @@ Find the task in the table, use its agent, then apply the difficulty overrides. 
 |---|---|---|---|
 | Find files, symbols, call sites, config, log lines | `scout` | haiku / low | Wrong answers are cheap to spot; main makes the judgment calls. |
 | Classify, tag, route or extract fields from many short items | `classifier` | haiku / medium | Lowest cost and latency; output is checkable. |
-| Read mail, chat, docs or web; pull facts, cases, table rows | `extractor` | sonnet / medium | Repeated, well-defined reading; low hallucination. |
+| Facts or summary from text already at hand: files, logs, pasted docs, a known URL | `reader` | haiku / high | No account tools needed; ~1/5 the cost of Sonnet medium with a lower hallucination rate. Thin or doubtful result: rerun on `extractor`. |
+| Facts found by searching mail, chat or drive, or following many web pages | `extractor` | sonnet / medium | Tool-call loops; Haiku scores far lower on tool workflows. |
 | Repeated agent tasks: investigation, triage, drafting replies | `extractor` | sonnet / medium | Well-defined repeat work rarely needs a bigger model. |
 | Bug fix, feature from a spec, 2-5 files, tests exist | `implementer` | sonnet / high | Handles scoped work at half the Opus token price. |
 | Documents, slides, spreadsheets, reports | `writer` | sonnet / high | Fast iteration, strong eye for layout. Complex financial model or large source pile: `architect`. |
@@ -36,7 +37,7 @@ Main session (not a subagent):
 - Any Critical signal (security, data loss, production/hardware control, release review) → `critical`, whatever the table said.
 - A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to `architect`.
 - Escalation chain: `implementer` → `implementer-hard` / `reviewer` (opus/high) → `architect` (fable/medium) → `critical` (fable/high).
-- Haiku agents only get work where a mistake is cheap to spot. Code edits and judgment calls never go to Haiku.
+- Haiku agents only get work where a mistake is cheap to spot. Code edits, judgment calls and account-tool loops (mail, chat, drive) never go to Haiku. Haiku max is not used: per task it costs about half of Sonnet medium but takes ~3.7x as long.
 
 ## 3. Before and after delegating
 
