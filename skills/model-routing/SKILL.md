@@ -22,21 +22,21 @@ Find the task in the table, use its agent, then apply the difficulty overrides. 
 | Debugging with unknown cause, concurrency, multi-process, cross-module, UI, no tests | `implementer-hard` | opus / high | Needs judgment and longer agentic loops. |
 | Hard review or audit | `reviewer` | opus / high | Same signals as above, no edits. |
 | Browser / computer use, screenshot- or image-heavy loops | `vision` | opus / medium | Long agentic loops over many images; Opus is built for these. |
-| Major refactor or migration, architecture planning, leading many subagents | `architect` | fable / medium | Most capable model for large technical work; medium first. |
-| Deep research, scientific or quantitative analysis | `architect` (brief says read-only) | fable / medium | Same; raise only per escalation. |
-| Security, data-loss risk, production or hardware control, final release review | `critical` | fable / high | Highest intelligence at top Terminal-Bench; cost is secondary. |
+| Major refactor or migration, architecture planning, leading many subagents | `implementer-hard` with `effort: xhigh` | opus / xhigh | Opus xhigh first; `architect` (fable / medium) only after Opus xhigh fails twice. |
+| Deep research, scientific or quantitative analysis | `reviewer` with `effort: xhigh` (brief says read-only) | opus / xhigh | Same; `architect` read-only only after two failed rounds. |
+| Security, data-loss risk, production or hardware control, final release review | `implementer-hard` / `reviewer` with `effort: xhigh` | opus / xhigh | Opus xhigh first; `critical` (fable / high) only after Opus xhigh fails twice. |
 | Easy: 1-2 files, mechanical, one obvious answer | main session | - | A brief and its check cost more than the task. |
 
 Main session (not a subagent):
 - Default and "not sure yet": **Opus 5.5 / medium**.
 - Chat a person waits on: Sonnet 5.5 / low or medium (Haiku 5.5 for simple chat at volume).
-- Long unattended runs, or Opus high still falls short: Fable 5.2 / medium.
+- Long unattended runs, or Opus high still falls short: Opus 5.5 / xhigh; Fable 5.2 / medium only after Opus xhigh fails twice.
 
 ## 2. Difficulty overrides (hardest signal wins)
 
-- Any Critical signal (security, data loss, production/hardware control, release review) → `critical`, whatever the table said.
-- A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to `architect`.
-- Escalation chain: `implementer` / `reviewer-lite` (sonnet/medium) → `implementer-hard` / `reviewer` (opus/high) → `architect` (fable/medium) → `critical` (fable/high).
+- Any Critical signal (security, data loss, production/hardware control, release review) → Opus xhigh (`implementer-hard` / `reviewer` with `effort: xhigh`), whatever the table said; `critical` only after Opus xhigh fails twice.
+- A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to Opus xhigh (`implementer-hard` with `effort: xhigh`), then `architect` after two failed rounds.
+- Escalation chain: `implementer` / `reviewer-lite` (sonnet/medium) → `implementer-hard` / `reviewer` (opus/high) → same agents at opus/xhigh → after two failed Opus xhigh rounds: `architect` (fable/medium) for Architecture work, `critical` (fable/high) for Critical work.
 - Haiku agents only get work where a mistake is cheap to spot. Code edits, judgment calls and account-tool loops (mail, chat, drive) never go to Haiku. Haiku max is not used: per task it costs about half of Sonnet medium but takes ~3.7x as long.
 
 ## 3. Before and after delegating

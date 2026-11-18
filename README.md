@@ -14,8 +14,8 @@ A Claude Code plugin that sends each subagent task to the right Claude model and
 | Hard debugging, concurrency, cross-module, UI, no tests | `implementer-hard` | opus / high |
 | Hard review or audit | `reviewer` | opus / high |
 | Browser, computer use, image-heavy loops | `vision` | opus / medium |
-| Major refactor or migration, architecture, deep research | `architect` | fable / medium |
-| Security, data loss, production or hardware control, release review | `critical` | fable / high |
+| Major refactor or migration, architecture, deep research | `implementer-hard` / `reviewer` with `effort: xhigh`; `architect` only after Opus xhigh fails twice | opus / xhigh, then fable / medium |
+| Security, data loss, production or hardware control, release review | `implementer-hard` / `reviewer` with `effort: xhigh`; `critical` only after Opus xhigh fails twice | opus / xhigh, then fable / high |
 | Easy 1-2 file changes | main session | Opus 5.5 / medium |
 
 The `model-routing` skill keeps this table, the difficulty overrides and the delegation checklist in `SKILL.md`, and loads detail only when needed from `references/` (escalation, costs, switching models, measuring). Evidence: Artificial Analysis 2026-11-18 and claude.dev "Which Claude model should you build with?" (2026-11-09).
@@ -44,7 +44,7 @@ A plugin cannot change these for you.
 ## Requirements
 
 - Claude Code v2.1.293 or later (the `haiku` alias resolves to Haiku 5.5 on the Anthropic API; on Bedrock, Vertex and Foundry it may still resolve to Haiku 4.5).
-- Access to Fable for the `architect` and `critical` agents. Without it, change `model: fable` to `model: opus` in both, and set `effort: high` in `architect.md` and `effort: xhigh` in `critical.md`.
+- Fable is only the escalation tier: `architect` and `critical` run when Opus xhigh has failed twice on the same Architecture or Critical task. Without Fable access, change `model: fable` to `model: opus` in both, and set `effort: xhigh` in each.
 
 ## Adjusting
 
