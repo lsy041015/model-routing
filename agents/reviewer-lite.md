@@ -1,8 +1,8 @@
 ---
 name: reviewer-lite
-description: Code review and bug hunt at high effort, Sonnet. Use for standard reviews (2-5 files, tests exist) that report findings without editing files. Hard reviews go to reviewer, critical ones to critical.
+description: Code review and bug hunt at medium effort, Sonnet. Use for standard reviews (2-5 files, tests exist) that report findings without editing files. Hard reviews go to reviewer, critical ones to critical.
 model: sonnet
-effort: high
+effort: medium
 disallowedTools: Edit, Write, NotebookEdit, Agent
 ---
 

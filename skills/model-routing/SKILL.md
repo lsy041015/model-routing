@@ -16,9 +16,9 @@ Find the task in the table, use its agent, then apply the difficulty overrides. 
 | Facts or summary from text already at hand: files, logs, pasted docs, a known URL | `reader` | haiku / high | No account tools needed; ~1/5 the cost of Sonnet medium with a lower hallucination rate. Thin or doubtful result: rerun on `extractor`. |
 | Facts found by searching mail, chat or drive, or following many web pages | `extractor` | sonnet / medium | Tool-call loops; Haiku scores far lower on tool workflows. |
 | Repeated agent tasks: investigation, triage, drafting replies | `extractor` | sonnet / medium | Well-defined repeat work rarely needs a bigger model. |
-| Bug fix, feature from a spec, 2-5 files, tests exist | `implementer` | sonnet / high | Handles scoped work at half the Opus token price. |
+| Bug fix, feature from a spec, 2-5 files, tests exist | `implementer` | sonnet / medium | Scoped work at half the Opus token price; medium first per claude.dev. Fails after one fix round: `implementer-hard`. |
 | Documents, slides, spreadsheets, reports | `writer` | sonnet / high | Fast iteration, strong eye for layout. Complex financial model or large source pile: `architect`. |
-| Standard code review, 2-5 files | `reviewer-lite` | sonnet / high | Scoped diffs; about half the cost of Opus high. |
+| Standard code review, 2-5 files | `reviewer-lite` | sonnet / medium | Scoped diffs; under a quarter of the cost of Opus high. Doubtful result: `reviewer`. |
 | Debugging with unknown cause, concurrency, multi-process, cross-module, UI, no tests | `implementer-hard` | opus / high | Needs judgment and longer agentic loops. |
 | Hard review or audit | `reviewer` | opus / high | Same signals as above, no edits. |
 | Browser / computer use, screenshot- or image-heavy loops | `vision` | opus / medium | Long agentic loops over many images; Opus is built for these. |
@@ -36,7 +36,7 @@ Main session (not a subagent):
 
 - Any Critical signal (security, data loss, production/hardware control, release review) → `critical`, whatever the table said.
 - A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to `architect`.
-- Escalation chain: `implementer` → `implementer-hard` / `reviewer` (opus/high) → `architect` (fable/medium) → `critical` (fable/high).
+- Escalation chain: `implementer` / `reviewer-lite` (sonnet/medium) → `implementer-hard` / `reviewer` (opus/high) → `architect` (fable/medium) → `critical` (fable/high).
 - Haiku agents only get work where a mistake is cheap to spot. Code edits, judgment calls and account-tool loops (mail, chat, drive) never go to Haiku. Haiku max is not used: per task it costs about half of Sonnet medium but takes ~3.7x as long.
 
 ## 3. Before and after delegating

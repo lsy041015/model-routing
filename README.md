@@ -8,9 +8,9 @@ A Claude Code plugin that sends each subagent task to the right Claude model and
 | Classify, tag, route many short items | `classifier` | haiku / medium |
 | Facts or summary from files, logs, pasted docs, a known URL | `reader` | haiku / high |
 | Facts found via mail, chat, drive or many web pages; repeated investigation | `extractor` | sonnet / medium |
-| Scoped bug fix or feature (2-5 files, tests) | `implementer` | sonnet / high |
+| Scoped bug fix or feature (2-5 files, tests) | `implementer` | sonnet / medium |
 | Documents, slides, spreadsheets, reports | `writer` | sonnet / high |
-| Standard code review | `reviewer-lite` | sonnet / high |
+| Standard code review | `reviewer-lite` | sonnet / medium |
 | Hard debugging, concurrency, cross-module, UI, no tests | `implementer-hard` | opus / high |
 | Hard review or audit | `reviewer` | opus / high |
 | Browser, computer use, image-heavy loops | `vision` | opus / medium |
