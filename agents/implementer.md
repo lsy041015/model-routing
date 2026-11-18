@@ -1,8 +1,8 @@
 ---
 name: implementer
-description: Implementation worker at high effort, Sonnet. Use for one bounded change of 2-5 files with a clear spec and tests, delegated with a brief.
+description: Implementation worker at medium effort, Sonnet. Use for one bounded change of 2-5 files with a clear spec and tests, delegated with a brief.
 model: sonnet
-effort: high
+effort: medium
 disallowedTools: Agent
 ---
 

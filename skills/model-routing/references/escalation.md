@@ -24,9 +24,10 @@ Go one step at a time; stop at the first step that works.
    output.
 2. **Effort +1.** Same model, one effort level up: take it over in the main
    session, or use the agent one level up on the same model
-   (`implementer` sonnet/high is already high; go to step 3).
+   (there is no Sonnet high agent: for `implementer` / `reviewer-lite`
+   sonnet/medium, go to step 3).
 3. **Model +1, effort down.** Next model up, at a lower effort than the failed
-   run: sonnet/high → opus/medium or `implementer-hard`; opus/high →
+   run: sonnet/medium → `implementer-hard` / `reviewer`; opus/high →
    `architect` fable/medium; fable/medium → `critical` fable/high.
 
 Do not go past `high` on the same model: one more level past high can cost as

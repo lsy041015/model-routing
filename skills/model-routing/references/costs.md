@@ -41,6 +41,8 @@ Reading the table:
 - Haiku max is no Sonnet substitute: half the cost of Sonnet medium, but tool
   workflows 0.354 vs 0.549 and 3.7x the time; below Sonnet high on
   Terminal-Bench (0.328 vs 0.439).
+- `implementer` / `reviewer-lite` run Sonnet medium, not high: −52% cost,
+  −42% time, Terminal-Bench 0.298 vs 0.439. Failures escalate to Opus high.
 - `reader` (Haiku high) vs `extractor` (Sonnet medium): −80% cost, hallucination
   0.389 vs 0.500, long-context 0.773 vs 0.763, 1.7x the time; tool workflows
   0.337 vs 0.549, so account-tool loops stay on Sonnet.
