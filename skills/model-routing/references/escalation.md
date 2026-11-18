@@ -26,12 +26,15 @@ Go one step at a time; stop at the first step that works.
    session, or use the agent one level up on the same model
    (there is no Sonnet high agent: for `implementer` / `reviewer-lite`
    sonnet/medium, go to step 3).
-3. **Model +1, effort down.** Next model up, at a lower effort than the failed
-   run: sonnet/medium → `implementer-hard` / `reviewer`; opus/high →
-   `architect` fable/medium; fable/medium → `critical` fable/high.
+3. **Model +1.** sonnet/medium → `implementer-hard` / `reviewer` (opus/high).
+4. **Opus xhigh.** opus/high → the same agents with `effort: xhigh`. Architecture
+   and Critical work starts here.
+5. **Fable, only after Opus xhigh fails twice** on the same task (two fix rounds
+   that still miss the criteria): `architect` fable/medium for Architecture
+   work, `critical` fable/high for Critical work.
 
-Do not go past `high` on the same model: one more level past high can cost as
-much as the next model, which usually does better.
+Opus xhigh costs about 2.5x high for +1.4 points on SWE-bench Pro, so keep it
+for Architecture and Critical work; Hard work stays at opus/high.
 
 ## Batches with automatic checks
 

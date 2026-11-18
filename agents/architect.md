@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Large technical work at medium effort, Fable. Use for major refactors or migrations, architecture planning, leading a multi-step plan, deep research, or scientific and quantitative analysis. Implements, plans or researches per the brief.
+description: Escalation only, medium effort, Fable. Use after Opus xhigh (implementer-hard with effort xhigh) has failed twice on major refactors or migrations, architecture planning, leading a multi-step plan, deep research, or scientific and quantitative analysis. Implements, plans or researches per the brief.
 model: fable
 effort: medium
 ---
