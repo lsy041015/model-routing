@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/model-routing-banner.png" alt="model-routing — Claude Code subagents routed to the right model" width="100%">
+  <img src="assets/model-routing-banner.png" alt="model-routing — Claude Code subagents routed to the right model" width="560">
 </p>
 
 # model-routing
