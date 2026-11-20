@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/model-routing-banner.png" alt="model-routing — Claude Code subagents routed to the right model" width="100%">
+</p>
+
 # model-routing
 
 A Claude Code plugin that sends each subagent task to the right Claude model and effort level, based on what the task is and how hard it is.
