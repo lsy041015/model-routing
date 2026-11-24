@@ -1,9 +1,9 @@
 ---
 name: implementer
-description: Standard code change (flash): 2-5 files, clear spec, tests exist. Escalate to implementer-hard after one failed fix round.
+description: Standard code change (pro): 2-5 files, clear spec, tests exist. Same tier as implementer-hard; split from it so the brief stays scoped.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools: [read_file, edit_file, write_file, run_command, manage_task]
 ---
 

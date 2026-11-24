@@ -1,9 +1,9 @@
 ---
 name: reviewer-lite
-description: Standard review, 2-5 files, tests exist (flash). No edits. Doubtful result: reviewer.
+description: Standard review, 2-5 files, tests exist (pro). No edits. Doubtful result: reviewer.
 subagent: true
 mainAgent: false
-model: flash
+model: pro
 tools: [read_file, run_command]
 ---
 
