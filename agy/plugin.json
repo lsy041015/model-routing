@@ -1,7 +1,7 @@
 {
   "name": "model-routing",
   "displayName": "Model routing",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Route agy subagents to the flash or pro tier by task type and difficulty, with a delegation and escalation checklist.",
   "logo": "assets/logo.svg",
   "author": { "name": "lsy041015", "url": "https://github.com/lsy041015" },
