@@ -32,6 +32,22 @@ Branches `core`, `claude`, `codex` and `agy` hold each part's history; `main` me
 
 ## Claude Code
 
+| Agent | Model | Effort | Use for |
+|---|---|---|---|
+| `scout` | haiku | low | find files, symbols, call sites, config values, log lines (read-only) |
+| `classifier` | haiku | medium | classify, tag, route or extract fields from many short items |
+| `reader` | haiku | high | facts or a summary from files, logs, pasted docs, one known URL |
+| `extractor` | sonnet | medium | facts via mail, chat, drive or many web pages; repeated investigation (read-only) |
+| `implementer` | sonnet | medium | Standard change: 2-5 files, clear spec, tests |
+| `reviewer-lite` | sonnet | medium | Standard review, no edits |
+| `writer` | sonnet | high | documents, slides, spreadsheets, reports |
+| `implementer-hard` | opus | high (xhigh for Architecture / Critical) | Hard change: unknown cause, concurrency, cross-module, UI, no tests, performance |
+| `reviewer` | opus | high (xhigh for Architecture / Critical) | Hard review, audit or bug hunt, no edits |
+| `vision` | opus | medium | browser, computer use, screenshot- or image-heavy loops |
+| `architect` | fable | medium | Architecture escalation, only after Opus xhigh failed twice |
+| `critical` | fable | high | Critical escalation, only after Opus xhigh failed twice |
+| main session | opus | medium | Easy 1-2 file changes, planning, final verification |
+
 ```
 /plugin marketplace add lsy041015/model-routing
 /plugin install model-routing@model-routing
@@ -47,6 +63,19 @@ Agents are named `model-routing:<agent>`, e.g. `model-routing:scout`. Needs Clau
 
 ## Codex CLI
 
+| Role | Model | Reasoning effort | Sandbox | Use for |
+|---|---|---|---|---|
+| `scout` | gpt-6.1-terra | low | read-only | find files, symbols, call sites, config |
+| `reader` | gpt-6.1-terra | high | read-only | facts or a summary from text at hand |
+| `extractor` | gpt-6.2-sol | medium | read-only | facts via mail, chat, drive or many web pages |
+| `implementer` | gpt-6.2-sol | high | workspace-write | Standard change: 2-5 files, clear spec, tests |
+| `reviewer-lite` | gpt-6.2-sol | high | read-only | Standard review, no edits |
+| `implementer-hard` | gpt-6.2-sol | xhigh | workspace-write | Hard, Architecture or Critical change (first try) |
+| `reviewer` | gpt-6.2-sol | xhigh | read-only | Hard, Architecture or Critical review (first try) |
+| `astra-hard` | gpt-6.2-astra | high | workspace-write | Hard escalation, only after sol xhigh failed twice |
+| `architect` | gpt-6.2-astra | xhigh | workspace-write | Architecture or Critical escalation, only after sol xhigh failed twice |
+| main session | gpt-6.2-sol | medium | - | Easy 1-2 file changes, planning, final verification |
+
 ```
 codex plugin marketplace add lsy041015/model-routing
 codex plugin add model-routing@model-routing
@@ -56,6 +85,17 @@ sh codex/install.sh        # from a clone: copies the role files into ~/.codex/a
 A Codex plugin can't register subagents, so `install.sh` copies `codex/agents/*.toml` into `$CODEX_HOME/agents` (existing files are kept unless `--force`) and prints the `[agents]` block for `config.toml`; it never edits `config.toml`. Recommended main session: `gpt-6.2-sol` at medium. Rules always on: add `Before spawning a subagent, follow the model-routing skill.` to `~/.codex/AGENTS.md`.
 
 ## agy (Antigravity CLI)
+
+| Agent | Tier | Tools | Use for |
+|---|---|---|---|
+| `scout` | flash | read_file | find files, symbols, call sites, config, log lines |
+| `reader` | flash | read_file, search_web | facts or a summary from text at hand |
+| `extractor` | flash | read_file, search_web (+ your read-only MCP tools) | facts via mail, chat, drive or many web pages |
+| `implementer` | flash | read_file, edit_file, write_file, run_command, manage_task | Standard change: 2-5 files, clear spec, tests |
+| `reviewer-lite` | flash | read_file, run_command | Standard review, no edits |
+| `implementer-hard` | pro | read_file, edit_file, write_file, run_command, manage_task | Hard, Architecture or Critical change |
+| `reviewer` | pro | read_file, run_command | Hard, Architecture or Critical review, no edits |
+| main session | your choice (`agy --model`, `--effort`) | - | Easy changes; strongest model at high effort for Architecture / Critical |
 
 ```
 agy plugin install https://github.com/lsy041015/model-routing/tree/main/agy
