@@ -1,0 +1,4 @@
+model = "gpt-6.1-terra"
+model_reasoning_effort = "low"
+sandbox_mode = "read-only"
+developer_instructions = """Locate files, symbols, call sites, config values or dead-code candidates. Read-only. Write no files. Return file:line citations and facts only; say what you could not confirm."""

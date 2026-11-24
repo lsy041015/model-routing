@@ -1,0 +1,4 @@
+model = "gpt-6.2-sol"
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+developer_instructions = """Review, bug hunt or audit a Standard change (2-5 files, tests exist). No edits. One finding per line: path:line, severity, problem, fix. No praise."""

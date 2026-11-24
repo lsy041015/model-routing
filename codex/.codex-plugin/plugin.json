@@ -1,0 +1,22 @@
+{
+  "name": "model-routing",
+  "version": "0.3.0",
+  "description": "Route Codex subagents to gpt-6.1-terra, gpt-6.2-sol or gpt-6.2-astra and the right reasoning effort by task type and difficulty.",
+  "author": { "name": "lsy041015", "url": "https://github.com/lsy041015" },
+  "homepage": "https://github.com/lsy041015/model-routing",
+  "repository": "https://github.com/lsy041015/model-routing",
+  "license": "MIT",
+  "keywords": ["subagents", "model-selection", "cost", "reasoning-effort", "routing"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Model routing",
+    "shortDescription": "Pick the model and effort for each subagent",
+    "category": "Productivity",
+    "capabilities": ["Instructions"],
+    "defaultPrompt": [
+      "Which model and effort should this task use?",
+      "Delegate this fix following model-routing.",
+      "This worker failed twice; escalate per model-routing."
+    ]
+  }
+}

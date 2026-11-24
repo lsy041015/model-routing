@@ -1,0 +1,4 @@
+model = "gpt-6.2-sol"
+model_reasoning_effort = "xhigh"
+sandbox_mode = "workspace-write"
+developer_instructions = """Implement a hard bounded change: unknown root cause, multi-process systems, concurrency, cross-module, no tests, UI, performance, small reversible migration. Touch only the allowed files. Run the brief's checks and report their real output."""
