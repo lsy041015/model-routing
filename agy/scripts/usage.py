@@ -11,7 +11,7 @@ in a readable form, so this reports runs only.
 """
 import collections, os, re, sqlite3, sys
 
-args = [a for a in sys.argv[1:] if not a.startswith('--')]
+args = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith('--') and sys.argv[i - 1] != '--root']
 if not args:
     sys.exit(__doc__)
 SINCE = args[0]
