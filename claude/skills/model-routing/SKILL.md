@@ -34,7 +34,7 @@ Main session (not a subagent):
 
 ## 2. Difficulty overrides (hardest signal wins)
 
-- Any Critical signal (security, data loss, production/hardware control, release review) → Opus xhigh (`implementer-hard` / `reviewer` with `effort: xhigh`), whatever the table said; `critical` only after Opus xhigh fails twice.
+- Any Critical signal (security, data loss, production/hardware control, release review) → Opus xhigh (`implementer-hard` / `reviewer` with `effort: xhigh`), whatever the table said; `critical` only after Opus xhigh fails twice. Critical means the change itself alters what reaches the hardware or production (command, stop or safety paths, deployed config); local benchmarks, profiling, read-only measurement and UI styling inside such a repo stay `implementer-hard` / `reviewer` at high.
 - A clear spec does not make work easy: performance optimization and migrations of 5 files or fewer that can be rolled back go to `implementer-hard`; migrations that change schemas or data or span several modules go to Opus xhigh (`implementer-hard` with `effort: xhigh`), then `architect` after two failed rounds.
 - Escalation chain: `implementer` / `reviewer-lite` (sonnet/medium) → `implementer-hard` / `reviewer` (opus/high) → same agents at opus/xhigh → after two failed Opus xhigh rounds: `architect` (fable/medium) for Architecture work, `critical` (fable/high) for Critical work.
 - Haiku agents only get work where a mistake is cheap to spot. Code edits, judgment calls and account-tool loops (mail, chat, drive) never go to Haiku. Haiku max is not used: per task it costs about half of Sonnet medium but takes ~3.7x as long.

@@ -1,6 +1,6 @@
 {
   "name": "model-routing",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Route Claude Code subagents to the right Claude model and effort by task type and difficulty: Haiku for lookups, Sonnet for scoped work, Opus for hard work, Opus xhigh for architecture and critical work, Fable only as the escalation after Opus xhigh fails twice.",
   "author": {
     "name": "lsy041015",
