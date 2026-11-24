@@ -7,7 +7,7 @@ import os, shutil, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'core', 'aa.py')
-PLUGINS = ('claude', 'codex', 'agy')
+PLUGINS = ('claude', 'codex')
 
 src = open(SRC, 'rb').read()
 bad = []

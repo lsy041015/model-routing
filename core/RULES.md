@@ -1,21 +1,19 @@
 # Model routing rules (provider-neutral)
 
-Each plugin (`claude/`, `codex/`, `agy/`) maps these rules to its own models. Only the
+Each plugin (`claude/`, `codex/`) maps these rules to its own models. Only the
 model names differ; the difficulty scale, delegation checklist and escalation order are
 the same everywhere.
 
 ## Tiers
 
-| Tier | Meaning | Claude | Codex | agy |
-|---|---|---|---|---|
-| T0 lookup | cheapest; output easy to check | haiku / low | terra / low | flash |
-| T1 read | cheap, low hallucination; text already at hand | haiku / high | terra / high | flash |
-| T2 scoped | tool loops and clear-spec work | sonnet / medium | sol / medium | flash (extraction); pro (code, review) |
-| T3 strong | hard work, judgment | opus / high | sol / high | pro |
-| T4 strong-max | architecture and critical work | opus / xhigh | sol / xhigh | pro |
-| T5 escalation | only after T4 failed twice | fable / medium-high | astra / high-xhigh | report to the user |
-
-agy subagents accept only two model tiers (`flash`, `pro`): `flash` for T0-T1 and extraction, `pro` for every code change or review; for T4 run the agy main session on a stronger model (Neon high -> Carbon).
+| Tier | Meaning | Claude | Codex |
+|---|---|---|---|
+| T0 lookup | cheapest; output easy to check | haiku / low | terra / low |
+| T1 read | cheap, low hallucination; text already at hand | haiku / high | terra / high |
+| T2 scoped | tool loops and clear-spec work | sonnet / medium | sol / medium |
+| T3 strong | hard work, judgment | opus / high | sol / high |
+| T4 strong-max | architecture and critical work | opus / xhigh | sol / xhigh |
+| T5 escalation | only after T4 failed twice | fable / medium-high | astra / high-xhigh |
 
 Codex: sol xhigh scores lower than sol high on Terminal-Bench (AA 2026-11-24), so a failing T3 Codex task skips T4 and escalates straight to astra (T5).
 
