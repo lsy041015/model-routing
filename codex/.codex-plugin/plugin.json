@@ -1,6 +1,6 @@
 {
   "name": "model-routing",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Route Codex subagents to gpt-6.1-terra, gpt-6.2-sol or gpt-6.2-astra and the right reasoning effort by task type and difficulty.",
   "author": { "name": "lsy041015", "url": "https://github.com/lsy041015" },
   "homepage": "https://github.com/lsy041015/model-routing",
