@@ -14,11 +14,11 @@ description = "Facts via mail/Slack/Drive or many web pages. gpt-6.2-sol medium.
 config_file = "agents/extractor.toml"
 
 [agents.implementer]
-description = "Standard code change: 2-5 files, clear spec, tests. gpt-6.2-sol high."
+description = "Standard code change: 2-5 files, clear spec, tests. gpt-6.2-sol medium."
 config_file = "agents/implementer.toml"
 
 [agents.implementer-hard]
-description = "Hard, Architecture or Critical code change (first try). gpt-6.2-sol xhigh."
+description = "Hard code change (first try). gpt-6.2-sol high."
 config_file = "agents/implementer-hard.toml"
 
 [agents.architect]
@@ -26,13 +26,21 @@ description = "Architecture or Critical work after sol xhigh failed twice. gpt-6
 config_file = "agents/architect.toml"
 
 [agents.astra-hard]
-description = "Hard work after sol xhigh failed twice (implement or review). gpt-6.2-astra high."
+description = "Hard work after sol high failed twice (implement or review). gpt-6.2-astra high."
 config_file = "agents/astra-hard.toml"
 
 [agents.reviewer-lite]
-description = "Standard review, no edits. gpt-6.2-sol high."
+description = "Standard review, no edits. gpt-6.2-sol medium."
 config_file = "agents/reviewer-lite.toml"
 
 [agents.reviewer]
-description = "Hard, Architecture or Critical review, no edits (first try). gpt-6.2-sol xhigh."
+description = "Hard review, no edits (first try). gpt-6.2-sol high."
 config_file = "agents/reviewer.toml"
+
+[agents.implementer-xhigh]
+description = "Architecture or Critical code change (first try). gpt-6.2-sol xhigh."
+config_file = "agents/implementer-xhigh.toml"
+
+[agents.reviewer-xhigh]
+description = "Architecture or Critical review, no edits (first try). gpt-6.2-sol xhigh."
+config_file = "agents/reviewer-xhigh.toml"

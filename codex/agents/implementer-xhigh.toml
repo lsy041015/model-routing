@@ -1,0 +1,4 @@
+model = "gpt-6.2-sol"
+model_reasoning_effort = "xhigh"
+sandbox_mode = "workspace-write"
+developer_instructions = """Implement an Architecture or Critical change (first try): architecture decisions, major refactors, schema/data migrations, production or hardware control paths, security, data-loss risk. Also unknown root cause, multi-process systems, concurrency, cross-module, no tests, UI, performance, small reversible migration. Touch only the allowed files. Run the brief's checks and report their real output."""
