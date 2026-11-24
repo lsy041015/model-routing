@@ -10,9 +10,9 @@ I kept catching my subagents doing easy lookups on the most expensive model, so 
 |---|---|---|---|---|
 | T0 lookup | find files, symbols, config, log lines | `scout` haiku / low | `scout` terra / low | `scout` flash |
 | T1 read | facts from files, logs, pasted docs, one URL | `reader` haiku / high | `reader` terra / high | `reader` flash |
-| T2 scoped | mail/chat/drive facts; 2-5 file change or review with tests | `extractor`, `implementer`, `reviewer-lite` sonnet / medium | sol / medium-high | flash |
-| T3 strong | Hard: unknown cause, concurrency, cross-module, UI, no tests, performance | `implementer-hard`, `reviewer` opus / high | sol / xhigh | `implementer-hard`, `reviewer` pro |
-| T4 strong-max | Architecture and Critical (production or hardware control, security, data loss, release) | same agents, opus / xhigh | sol / xhigh | pro |
+| T2 scoped | mail/chat/drive facts; 2-5 file change or review with tests | `extractor`, `implementer`, `reviewer-lite` sonnet / medium | sol / medium | `extractor` flash; `implementer`, `reviewer-lite` pro |
+| T3 strong | Hard: unknown cause, concurrency, cross-module, UI, no tests, performance | `implementer-hard`, `reviewer` opus / high | `implementer-hard`, `reviewer` sol / high | `implementer-hard`, `reviewer` pro |
+| T4 strong-max | Architecture and Critical (production or hardware control, security, data loss, release) | same agents, opus / xhigh | `implementer-xhigh`, `reviewer-xhigh` sol / xhigh | pro + main session on Gemini 4 Carbon |
 | T5 escalation | only after T4 failed twice on the same task | `architect` / `critical` fable | `astra-hard` / `architect` astra | report to the user |
 
 Easy 1-2 file changes stay in the main session. "Critical" means the change itself alters what reaches the hardware or production; local benchmarks, profiling, read-only measurement and UI styling stay Hard.
@@ -25,7 +25,7 @@ The picks come from [Artificial Analysis](https://artificialanalysis.ai) (Intell
 |---|---|
 | `core/` | shared rules, the AA scraper `aa.py`, `sync.py` that copies it into each plugin |
 | `claude/` | Claude Code plugin: skill, 12 agents, `routing/routing.json` |
-| `codex/` | Codex plugin: skill, 9 role files + `install.sh`, `routing/gpt_rows.json` |
+| `codex/` | Codex plugin: skill, 11 role files + `install.sh`, `routing/gpt_rows.json` |
 | `agy/` | agy plugin: always-on rules, 7 agents, `routing/gemini_rows.json` |
 
 Branches `core`, `claude`, `codex` and `agy` hold each part's history; `main` merges them.
@@ -68,11 +68,13 @@ Agents are named `model-routing:<agent>`, e.g. `model-routing:scout`. Needs Clau
 | `scout` | gpt-6.1-terra | low | read-only | find files, symbols, call sites, config |
 | `reader` | gpt-6.1-terra | high | read-only | facts or a summary from text at hand |
 | `extractor` | gpt-6.2-sol | medium | read-only | facts via mail, chat, drive or many web pages |
-| `implementer` | gpt-6.2-sol | high | workspace-write | Standard change: 2-5 files, clear spec, tests |
-| `reviewer-lite` | gpt-6.2-sol | high | read-only | Standard review, no edits |
-| `implementer-hard` | gpt-6.2-sol | xhigh | workspace-write | Hard, Architecture or Critical change (first try) |
-| `reviewer` | gpt-6.2-sol | xhigh | read-only | Hard, Architecture or Critical review (first try) |
-| `astra-hard` | gpt-6.2-astra | high | workspace-write | Hard escalation, only after sol xhigh failed twice |
+| `implementer` | gpt-6.2-sol | medium | workspace-write | Standard change: 2-5 files, clear spec, tests |
+| `reviewer-lite` | gpt-6.2-sol | medium | read-only | Standard review, no edits |
+| `implementer-hard` | gpt-6.2-sol | high | workspace-write | Hard change (first try) |
+| `reviewer` | gpt-6.2-sol | high | read-only | Hard review (first try) |
+| `implementer-xhigh` | gpt-6.2-sol | xhigh | workspace-write | Architecture or Critical change (first try) |
+| `reviewer-xhigh` | gpt-6.2-sol | xhigh | read-only | Architecture or Critical review (first try) |
+| `astra-hard` | gpt-6.2-astra | high | workspace-write | Hard escalation, only after sol high failed twice |
 | `architect` | gpt-6.2-astra | xhigh | workspace-write | Architecture or Critical escalation, only after sol xhigh failed twice |
 | main session | gpt-6.2-sol | medium | - | Easy 1-2 file changes, planning, final verification |
 
@@ -82,7 +84,7 @@ codex plugin add model-routing@model-routing
 sh codex/install.sh        # from a clone: copies the role files into ~/.codex/agents
 ```
 
-A Codex plugin can't register subagents, so `install.sh` copies `codex/agents/*.toml` into `$CODEX_HOME/agents` (existing files are kept unless `--force`) and prints the `[agents]` block for `config.toml`; it never edits `config.toml`. Recommended main session: `gpt-6.2-sol` at medium. Rules always on: add `Before spawning a subagent, follow the model-routing skill.` to `~/.codex/AGENTS.md`.
+A Codex plugin can't register subagents, so `install.sh` copies `codex/agents/*.toml` into `$CODEX_HOME/agents` (existing files are kept unless `--force`) and prints the `[agents]` block for `config.toml`; it never edits `config.toml`. Recommended main session: `gpt-6.2-sol` at medium. sol `xhigh` scores lower than `high` on Terminal-Bench (AA 2026-11-24), so it is used only as the first try for Architecture and Critical work. Rules always on: add `Before spawning a subagent, follow the model-routing skill.` to `~/.codex/AGENTS.md`.
 
 ## agy (Antigravity CLI)
 
@@ -91,17 +93,17 @@ A Codex plugin can't register subagents, so `install.sh` copies `codex/agents/*.
 | `scout` | flash | read_file | find files, symbols, call sites, config, log lines |
 | `reader` | flash | read_file, search_web | facts or a summary from text at hand |
 | `extractor` | flash | read_file, search_web (+ your read-only MCP tools) | facts via mail, chat, drive or many web pages |
-| `implementer` | flash | read_file, edit_file, write_file, run_command, manage_task | Standard change: 2-5 files, clear spec, tests |
-| `reviewer-lite` | flash | read_file, run_command | Standard review, no edits |
+| `implementer` | pro | read_file, edit_file, write_file, run_command, manage_task | Standard change: 2-5 files, clear spec, tests |
+| `reviewer-lite` | pro | read_file, run_command | Standard review, no edits |
 | `implementer-hard` | pro | read_file, edit_file, write_file, run_command, manage_task | Hard, Architecture or Critical change |
 | `reviewer` | pro | read_file, run_command | Hard, Architecture or Critical review, no edits |
-| main session | your choice (`agy --model`, `--effort`) | - | Easy changes; strongest model at high effort for Architecture / Critical |
+| main session | `gemini-4-neon-high` (cost: `neon-medium`); `gemini-4-carbon` high for Architecture / Critical | - | Easy changes, planning, final verification. Avoid `gemini-4-argon` and `gemini-3.8-flash` (beaten by Neon on AA) |
 
 ```
 agy plugin install https://github.com/lsy041015/model-routing/tree/main/agy
 ```
 
-The rules in `agy/rules/AGENTS.md` are always on while the plugin is enabled. agy subagents accept only a model tier (`model: flash` or `model: pro`; a full model id makes the loader skip the agent), so the table collapses to two tiers. For Architecture and Critical work, run the main session itself on the strongest model (`agy --model ... --effort high`). `extractor` only has read and web tools; add your read-only mail/chat MCP tools to its `tools:` list.
+The rules in `agy/rules/AGENTS.md` are always on while the plugin is enabled. agy subagents accept only a model tier (`model: flash` or `model: pro`; a full model id makes the loader skip the agent), so `flash` is used only for lookups and extraction and every code change or review runs on `pro` (if `flash` runs Gemini 3.8 Flash, its coding score is far below Gemini 4). For Architecture and Critical work, run the main session on Gemini 4 Carbon. `extractor` only has read and web tools; add your read-only mail/chat MCP tools to its `tools:` list.
 
 ## Measuring
 

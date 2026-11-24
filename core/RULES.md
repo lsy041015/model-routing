@@ -10,12 +10,14 @@ the same everywhere.
 |---|---|---|---|---|
 | T0 lookup | cheapest; output easy to check | haiku / low | terra / low | flash |
 | T1 read | cheap, low hallucination; text already at hand | haiku / high | terra / high | flash |
-| T2 scoped | tool loops and clear-spec work | sonnet / medium | sol / medium-high | flash |
-| T3 strong | hard work, judgment | opus / high | sol / xhigh | pro |
+| T2 scoped | tool loops and clear-spec work | sonnet / medium | sol / medium | flash (extraction); pro (code, review) |
+| T3 strong | hard work, judgment | opus / high | sol / high | pro |
 | T4 strong-max | architecture and critical work | opus / xhigh | sol / xhigh | pro |
 | T5 escalation | only after T4 failed twice | fable / medium-high | astra / high-xhigh | report to the user |
 
-agy subagents accept only two model tiers (`flash`, `pro`), so T0-T2 and T3-T5 collapse.
+agy subagents accept only two model tiers (`flash`, `pro`): `flash` for T0-T1 and extraction, `pro` for every code change or review; for T4 run the agy main session on a stronger model (Neon high -> Carbon).
+
+Codex: sol xhigh scores lower than sol high on Terminal-Bench (AA 2026-11-24), so a failing T3 Codex task skips T4 and escalates straight to astra (T5).
 
 ## Difficulty (hardest signal wins)
 
