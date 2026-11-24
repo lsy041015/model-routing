@@ -1,60 +1,79 @@
 #!/usr/bin/env python3
-"""Count Codex subagent runs by role, model and effort from local rollouts.
+"""Count Codex subagent runs by role, model and effort.
 
-Usage: python3 -I codex/scripts/usage.py SINCE_ISO [CUTOFF_ISO] [--root DIR]
-  --root  sessions folder (default $CODEX_HOME/sessions or ~/.codex/sessions)
-A subagent rollout starts with session_meta whose source is
-{"subagent": {"thread_spawn": {"agent_role": ...}}}; model and effort come from its
-first turn_context, output tokens from its last token_count event.
+Usage: python3 -I codex/scripts/usage.py SINCE_ISO [CUTOFF_ISO] [--home DIR]
+  --home  Codex home (default $CODEX_HOME or ~/.codex)
+Reads the newest state_<n>.sqlite: every thread that is the child of a
+thread_spawn_edges row is one spawned subagent, with its agent_role, model,
+reasoning_effort and tokens_used (input + output, as Codex records it).
+Codex before the state DB kept this only in rollout files; those are read as a
+fallback when no state DB exists.
 """
-import collections, glob, json, os, sys
+import collections, datetime, glob, json, os, re, sqlite3, sys
 
-args = [a for a in sys.argv[1:] if not a.startswith('--')]
+args = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith('--') and sys.argv[i - 1] != '--home']
 if not args:
     sys.exit(__doc__)
 SINCE, CUT = args[0], (args[1] if len(args) > 1 else None)
-home = os.environ.get('CODEX_HOME', os.path.expanduser('~/.codex'))
-ROOT = sys.argv[sys.argv.index('--root') + 1] if '--root' in sys.argv else os.path.join(home, 'sessions')
+HOME = sys.argv[sys.argv.index('--home') + 1] if '--home' in sys.argv else \
+    os.environ.get('CODEX_HOME', os.path.expanduser('~/.codex'))
 
 
-def read(path):
-    """(start, role, model, effort, output tokens) or None if not a spawned subagent."""
-    start = role = model = effort = None
-    tokens = 0
-    for i, line in enumerate(open(path, errors='ignore')):
-        try:
-            d = json.loads(line)
-        except ValueError:
-            continue
-        p = d.get('payload') or {}
-        if i == 0:
-            spawn = ((p.get('source') or {}) if isinstance(p.get('source'), dict) else {}).get('subagent') or {}
-            spawn = spawn.get('thread_spawn') if isinstance(spawn, dict) else None
-            if not spawn:
-                return None
-            start, role = p.get('timestamp') or d.get('timestamp'), spawn.get('agent_role') or '?'
-        elif d.get('type') == 'turn_context' and model is None:
-            model, effort = p.get('model'), p.get('effort') or p.get('reasoning_effort')
-        elif d.get('type') == 'event_msg' and p.get('type') == 'token_count':
-            tokens = ((p.get('info') or {}).get('total_token_usage') or {}).get('output_tokens', tokens)
-    return start, role, model or '?', effort or '?', tokens
+def iso(epoch):
+    return datetime.datetime.fromtimestamp(int(epoch), datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
-runs, out = collections.Counter(), collections.Counter()
-for f in glob.glob(os.path.join(ROOT, '**', 'rollout-*.jsonl'), recursive=True):
-    r = read(f)
-    if not r or not r[0] or r[0] < SINCE:
+def from_db(path):
+    db = sqlite3.connect('file:%s?mode=ro' % path, uri=True)
+    rows = db.execute(
+        'select t.created_at, t.agent_role, t.model, t.reasoning_effort, t.tokens_used '
+        'from threads t join thread_spawn_edges e on e.child_thread_id = t.id')
+    return [(iso(c), r or '?', m or '?', e or '?', tok or 0) for c, r, m, e, tok in rows]
+
+
+def from_rollouts(root):
+    out = []
+    for f in glob.glob(os.path.join(root, '**', 'rollout-*.jsonl'), recursive=True):
+        start = role = model = effort = None
+        tokens = 0
+        for i, line in enumerate(open(f, errors='ignore')):
+            try:
+                d = json.loads(line)
+            except ValueError:
+                continue
+            p = d.get('payload') or {}
+            if i == 0:
+                src = p.get('source') if isinstance(p.get('source'), dict) else {}
+                spawn = (src.get('subagent') or {}).get('thread_spawn') if isinstance(src.get('subagent'), dict) else None
+                if not spawn:
+                    break
+                start, role = p.get('timestamp') or d.get('timestamp'), spawn.get('agent_role')
+            elif d.get('type') == 'turn_context' and model is None:
+                model, effort = p.get('model'), p.get('effort')
+            elif d.get('type') == 'event_msg' and p.get('type') == 'token_count':
+                tokens = ((p.get('info') or {}).get('total_token_usage') or {}).get('total_tokens', tokens)
+        if start:
+            out.append((start, role or '?', model or '?', effort or '?', tokens))
+    return out
+
+
+dbs = sorted(glob.glob(os.path.join(HOME, 'state_*.sqlite')),
+             key=lambda p: int(re.search(r'state_(\d+)', p).group(1)))
+records = from_db(dbs[-1]) if dbs else from_rollouts(os.path.join(HOME, 'sessions'))
+runs, tok = collections.Counter(), collections.Counter()
+for start, role, model, effort, tokens in records:
+    if start < SINCE:
         continue
-    side = '' if not CUT else ('after' if r[0] >= CUT else 'before')
-    key = (side,) + r[1:4]
+    key = ('' if not CUT else ('after' if start >= CUT else 'before'), role, model, effort)
     runs[key] += 1
-    out[key] += r[4]
+    tok[key] += tokens
 
+print('source:', os.path.basename(dbs[-1]) if dbs else 'rollout files')
 if not runs:
     print('no subagent runs since', SINCE)
-total = sum(out.values()) or 1
+total = sum(tok.values()) or 1
 for side in sorted({k[0] for k in runs}):
     keys = [k for k in runs if k[0] == side]
-    print(f"== {side or 'all'} since {SINCE}: {sum(runs[k] for k in keys)} runs, {sum(out[k] for k in keys)} output tokens")
-    for k in sorted(keys, key=lambda k: -out[k]):
-        print(f'  {runs[k]:4} runs {out[k]:>10} tok {100 * out[k] / total:5.1f}%  {k[1]}  {k[2]}  {k[3]}')
+    print(f"== {side or 'all'} since {SINCE}: {sum(runs[k] for k in keys)} runs, {sum(tok[k] for k in keys)} tokens")
+    for k in sorted(keys, key=lambda k: -tok[k]):
+        print(f'  {runs[k]:4} runs {tok[k]:>11} tok {100 * tok[k] / total:5.1f}%  {k[1]}  {k[2]}  {k[3]}')
