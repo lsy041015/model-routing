@@ -9,7 +9,7 @@ Each run is counted by its own start time, so long sessions spanning SINCE are i
 """
 import collections, glob, json, os, sys
 
-args = [a for a in sys.argv[1:] if not a.startswith('--')]
+args = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith('--') and sys.argv[i - 1] != '--root']
 if not args:
     sys.exit(__doc__)
 SINCE, CUT = args[0], (args[1] if len(args) > 1 else None)
