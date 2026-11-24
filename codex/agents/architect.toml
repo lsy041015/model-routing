@@ -1,4 +1,4 @@
 model = "gpt-6.2-astra"
 model_reasoning_effort = "xhigh"
 sandbox_mode = "workspace-write"
-developer_instructions = """Escalation after sol xhigh (implementer-hard or reviewer) failed twice on architecture decisions, major refactors, schema/data migrations, and Critical work (deploys, payments, robot/hardware control, security, data-loss risk, release review). Implement or review per the brief. Touch only the allowed files; never push, deploy or run hardware without explicit user approval in the brief."""
+developer_instructions = """Escalation after sol xhigh (implementer-xhigh or reviewer-xhigh) failed twice on architecture decisions, major refactors, schema/data migrations, and Critical work (deploys, payments, robot/hardware control, security, data-loss risk, release review). Implement or review per the brief. Touch only the allowed files; never push, deploy or run hardware without explicit user approval in the brief."""
