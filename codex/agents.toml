@@ -1,0 +1,38 @@
+[agents]
+max_threads = 3
+
+[agents.scout]
+description = "Read-only lookup: files, symbols, call sites, config. gpt-6.1-terra low."
+config_file = "agents/scout.toml"
+
+[agents.reader]
+description = "Facts/summary from text at hand (files, logs, pasted docs, one URL). gpt-6.1-terra high."
+config_file = "agents/reader.toml"
+
+[agents.extractor]
+description = "Facts via mail/Slack/Drive or many web pages. gpt-6.2-sol medium."
+config_file = "agents/extractor.toml"
+
+[agents.implementer]
+description = "Standard code change: 2-5 files, clear spec, tests. gpt-6.2-sol high."
+config_file = "agents/implementer.toml"
+
+[agents.implementer-hard]
+description = "Hard, Architecture or Critical code change (first try). gpt-6.2-sol xhigh."
+config_file = "agents/implementer-hard.toml"
+
+[agents.architect]
+description = "Architecture or Critical work after sol xhigh failed twice. gpt-6.2-astra xhigh."
+config_file = "agents/architect.toml"
+
+[agents.astra-hard]
+description = "Hard work after sol xhigh failed twice (implement or review). gpt-6.2-astra high."
+config_file = "agents/astra-hard.toml"
+
+[agents.reviewer-lite]
+description = "Standard review, no edits. gpt-6.2-sol high."
+config_file = "agents/reviewer-lite.toml"
+
+[agents.reviewer]
+description = "Hard, Architecture or Critical review, no edits (first try). gpt-6.2-sol xhigh."
+config_file = "agents/reviewer.toml"

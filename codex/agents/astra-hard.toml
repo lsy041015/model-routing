@@ -1,0 +1,4 @@
+model = "gpt-6.2-astra"
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"
+developer_instructions = """Escalation for a Hard task after sol xhigh (implementer-hard or reviewer) failed twice. Implement or review per the brief. Touch only the allowed files; for a review, edit nothing and report one finding per line: path:line, severity, problem, fix. Run the brief's checks and report their real output."""
